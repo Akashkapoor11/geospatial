@@ -1,10 +1,5 @@
 # Geospatial File Measurement API
 
-[![CI](https://github.com/your-username/geospatial-api/actions/workflows/ci.yml/badge.svg)](https://github.com/your-username/geospatial-api/actions/workflows/ci.yml)
-[![Python 3.12+](https://img.shields.io/badge/python-3.12%2B-blue.svg)](https://www.python.org/downloads/)
-[![FastAPI](https://img.shields.io/badge/FastAPI-0.120%2B-009688.svg)](https://fastapi.tiangolo.com)
-[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](./LICENSE)
-
 A **production-oriented** geospatial file processing backend built with **FastAPI**.  
 Upload a `.kml` file or a `.zip` archive containing a Shapefile and receive **CRS-aware area and length measurements** for every feature.
 
