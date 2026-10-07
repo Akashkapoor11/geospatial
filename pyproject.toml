@@ -1,0 +1,51 @@
+[build-system]
+requires = ["setuptools>=68"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "geospatial-file-measurement-api"
+version = "1.0.0"
+description = "Production-oriented geospatial file measurement API"
+readme = "README.md"
+requires-python = ">=3.12"
+license = {text = "MIT"}
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+addopts = "-q --tb=short"
+filterwarnings = [
+    # Suppress noisy but harmless deprecation warnings from third-party libs
+    "ignore::DeprecationWarning:geopandas",
+    "ignore::DeprecationWarning:shapely",
+    "ignore::DeprecationWarning:pyogrio",
+    "ignore::FutureWarning:geopandas",
+    "ignore::UserWarning:geopandas",
+    # Allow our own warnings
+    "default::DeprecationWarning:app",
+]
+
+[tool.black]
+line-length = 100
+target-version = ["py312"]
+
+[tool.ruff]
+line-length = 100
+target-version = "py312"
+extend-exclude = ["alembic/versions"]
+
+[tool.ruff.lint]
+select = ["E", "F", "I", "B", "UP", "N", "SIM", "ANN001", "ANN201"]
+ignore = [
+    "B008",     # FastAPI Depends() in function signatures is idiomatic
+    "ANN001",   # Missing type annotation for self/cls — too noisy
+    "ANN201",   # Missing return type — handled by mypy
+]
+
+[tool.mypy]
+python_version = "3.12"
+ignore_missing_imports = true
+warn_unused_ignores = false
+disallow_untyped_defs = false
+check_untyped_defs = true
+warn_return_any = false
+no_implicit_optional = true

@@ -1,0 +1,239 @@
+{
+  "info": {
+    "name": "Geospatial File Measurement API",
+    "description": "Complete Postman collection for the Geospatial File Measurement API.\n\nWorkflow:\n1. Run 'Upload KML File' → copy the returned `id`\n2. Run 'Get File Info' to check status (poll until COMPLETED)\n3. Run 'Get Measurements' to see area/length results\n4. Run 'Get Features' to see raw geometry and properties\n\nAlternatively upload a Shapefile ZIP using 'Upload Shapefile ZIP'.",
+    "_postman_id": "geo-api-v1",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "variable": [
+    {
+      "key": "base_url",
+      "value": "http://localhost:8000",
+      "type": "string",
+      "description": "Base URL of the running API"
+    },
+    {
+      "key": "file_id",
+      "value": "",
+      "type": "string",
+      "description": "Set this after uploading a file"
+    }
+  ],
+  "item": [
+    {
+      "name": "Meta",
+      "item": [
+        {
+          "name": "Root — API Info",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{base_url}}/",
+              "host": ["{{base_url}}"],
+              "path": [""]
+            }
+          }
+        },
+        {
+          "name": "Health Check",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{base_url}}/health",
+              "host": ["{{base_url}}"],
+              "path": ["health"]
+            }
+          }
+        },
+        {
+          "name": "Readiness Check",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{base_url}}/ready",
+              "host": ["{{base_url}}"],
+              "path": ["ready"]
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "Files",
+      "item": [
+        {
+          "name": "Upload KML File",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "const body = pm.response.json();",
+                  "if (body.id) {",
+                  "  pm.collectionVariables.set('file_id', body.id);",
+                  "  console.log('file_id set to:', body.id);",
+                  "}"
+                ],
+                "type": "text/javascript"
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [],
+            "body": {
+              "mode": "formdata",
+              "formdata": [
+                {
+                  "key": "file",
+                  "type": "file",
+                  "src": "sample_data/demo.kml",
+                  "description": "KML file to upload"
+                }
+              ]
+            },
+            "url": {
+              "raw": "{{base_url}}/api/files/",
+              "host": ["{{base_url}}"],
+              "path": ["api", "files", ""]
+            },
+            "description": "Upload a KML file. Returns 202 Accepted. The file_id is automatically saved to the collection variable."
+          }
+        },
+        {
+          "name": "Upload Shapefile ZIP",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "const body = pm.response.json();",
+                  "if (body.id) {",
+                  "  pm.collectionVariables.set('file_id', body.id);",
+                  "  console.log('file_id set to:', body.id);",
+                  "}"
+                ],
+                "type": "text/javascript"
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [],
+            "body": {
+              "mode": "formdata",
+              "formdata": [
+                {
+                  "key": "file",
+                  "type": "file",
+                  "src": "sample_data/demo_shapefile.zip",
+                  "description": "ZIP archive containing a Shapefile"
+                }
+              ]
+            },
+            "url": {
+              "raw": "{{base_url}}/api/files/",
+              "host": ["{{base_url}}"],
+              "path": ["api", "files", ""]
+            },
+            "description": "Upload a Shapefile ZIP. Returns 202 Accepted."
+          }
+        },
+        {
+          "name": "List Files",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{base_url}}/api/files/?page=1&page_size=20",
+              "host": ["{{base_url}}"],
+              "path": ["api", "files", ""],
+              "query": [
+                {"key": "page", "value": "1"},
+                {"key": "page_size", "value": "20"},
+                {"key": "status", "value": "COMPLETED", "disabled": true}
+              ]
+            },
+            "description": "List all uploaded files. Optionally filter by status (UPLOADED, PROCESSING, COMPLETED, FAILED)."
+          }
+        },
+        {
+          "name": "Get File Info",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{base_url}}/api/files/{{file_id}}/",
+              "host": ["{{base_url}}"],
+              "path": ["api", "files", "{{file_id}}", ""]
+            },
+            "description": "Returns file metadata and processing status. Poll this until status is COMPLETED."
+          }
+        },
+        {
+          "name": "Get Measurements",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{base_url}}/api/files/{{file_id}}/measurements/?page=1&page_size=50",
+              "host": ["{{base_url}}"],
+              "path": ["api", "files", "{{file_id}}", "measurements", ""],
+              "query": [
+                {"key": "page", "value": "1"},
+                {"key": "page_size", "value": "50"}
+              ]
+            },
+            "description": "Returns area/length measurements for all features. Requires status=COMPLETED."
+          }
+        },
+        {
+          "name": "Get Features",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{base_url}}/api/files/{{file_id}}/features/?page=1&page_size=50",
+              "host": ["{{base_url}}"],
+              "path": ["api", "files", "{{file_id}}", "features", ""],
+              "query": [
+                {"key": "page", "value": "1"},
+                {"key": "page_size", "value": "50"}
+              ]
+            },
+            "description": "Returns raw extracted features with geometry (GeoJSON) and properties."
+          }
+        },
+        {
+          "name": "Get Single Feature",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{base_url}}/api/files/{{file_id}}/features/1/",
+              "host": ["{{base_url}}"],
+              "path": ["api", "files", "{{file_id}}", "features", "1", ""]
+            },
+            "description": "Returns a single feature by its database ID."
+          }
+        },
+        {
+          "name": "Delete File",
+          "request": {
+            "method": "DELETE",
+            "header": [],
+            "url": {
+              "raw": "{{base_url}}/api/files/{{file_id}}/",
+              "host": ["{{base_url}}"],
+              "path": ["api", "files", "{{file_id}}", ""]
+            },
+            "description": "Permanently deletes the file record, all features, measurements, and the file on disk. Returns 204 No Content."
+          }
+        }
+      ]
+    }
+  ]
+}

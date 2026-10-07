@@ -1,0 +1,88 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<kml xmlns="http://www.opengis.net/kml/2.2">
+  <Document>
+    <name>Demo Geospatial Dataset — Bengaluru, India</name>
+    <description>
+      Sample dataset for the Geospatial File Measurement API demo.
+      Contains a Polygon, LineString, and Point in EPSG:4326.
+    </description>
+
+    <!-- ─── Polygon (area will be calculated) ──────────────────────── -->
+    <Placemark>
+      <name>Cubbon Park Approximate Boundary</name>
+      <description>A polygon approximating Cubbon Park, Bengaluru.</description>
+      <ExtendedData>
+        <Data name="category"><value>park</value></Data>
+        <Data name="area_ha_approx"><value>120</value></Data>
+      </ExtendedData>
+      <Polygon>
+        <outerBoundaryIs>
+          <LinearRing>
+            <coordinates>
+              77.5913,12.9766,0
+              77.5979,12.9766,0
+              77.5979,12.9838,0
+              77.5913,12.9838,0
+              77.5913,12.9766,0
+            </coordinates>
+          </LinearRing>
+        </outerBoundaryIs>
+      </Polygon>
+    </Placemark>
+
+    <!-- ─── LineString (length will be calculated) ─────────────────── -->
+    <Placemark>
+      <name>MG Road Segment</name>
+      <description>A segment of Mahatma Gandhi Road, Bengaluru.</description>
+      <ExtendedData>
+        <Data name="road_class"><value>arterial</value></Data>
+        <Data name="lanes"><value>6</value></Data>
+      </ExtendedData>
+      <LineString>
+        <coordinates>
+          77.6080,12.9750,0
+          77.6120,12.9750,0
+          77.6160,12.9735,0
+          77.6210,12.9720,0
+        </coordinates>
+      </LineString>
+    </Placemark>
+
+    <!-- ─── Point (no measurement required) ────────────────────────── -->
+    <Placemark>
+      <name>Vidhana Soudha</name>
+      <description>Seat of the state legislature of Karnataka.</description>
+      <ExtendedData>
+        <Data name="type"><value>government_building</value></Data>
+        <Data name="year_built"><value>1956</value></Data>
+      </ExtendedData>
+      <Point>
+        <coordinates>77.5908,12.9793,0</coordinates>
+      </Point>
+    </Placemark>
+
+    <!-- ─── Second Polygon ──────────────────────────────────────────── -->
+    <Placemark>
+      <name>Lalbagh Botanical Garden</name>
+      <description>A polygon approximating Lalbagh, Bengaluru.</description>
+      <ExtendedData>
+        <Data name="category"><value>botanical_garden</value></Data>
+        <Data name="heritage"><value>true</value></Data>
+      </ExtendedData>
+      <Polygon>
+        <outerBoundaryIs>
+          <LinearRing>
+            <coordinates>
+              77.5827,12.9494,0
+              77.5905,12.9494,0
+              77.5905,12.9566,0
+              77.5827,12.9566,0
+              77.5827,12.9494,0
+            </coordinates>
+          </LinearRing>
+        </outerBoundaryIs>
+      </Polygon>
+    </Placemark>
+
+  </Document>
+</kml>
