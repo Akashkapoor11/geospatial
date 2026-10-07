@@ -726,19 +726,6 @@ Polygon area → m² (UTM/LAEA). LineString length → m. For source datasets al
 
 ---
 
-## Learning
-
-Building this project reinforced several important lessons:
-
-- **CRS is not optional.** Treating degrees as distances produces silently wrong results. Proper CRS handling requires checking, projecting, and reporting.
-- **Geospatial data is messy.** Files often contain invalid geometries, unknown CRS, mixed geometry types, or empty features. Each must be handled independently without crashing the pipeline.
-- **Background task design.** The 202 Accepted pattern with status polling is a clean way to handle CPU-bound work without blocking HTTP threads.
-- **ZIP security.** Archive handling is a well-known attack surface. Checking for traversal, bombs, symlinks, and encrypted entries is non-trivial but essential.
-- **Per-feature isolation.** Aborting all features because one fails wastes good data. Isolating failures at the feature level is both more robust and more useful to the caller.
-- **FastAPI's dependency injection** makes it easy to build testable services without tight coupling between layers.
-
----
-
 ## Future scope
 
 The implementation intentionally stays within the assignment scope. Natural next improvements:
@@ -756,45 +743,5 @@ The implementation intentionally stays within the assignment scope. Natural next
 11. **Async database sessions** — replace sync SQLAlchemy with `AsyncSession` for fully non-blocking I/O.
 12. **File format expansion** — GeoJSON, GeoPackage, CSV with WKT.
 
----
 
-## Assignment compliance checklist
-
-- [x] FastAPI backend
-- [x] `.kml` upload
-- [x] `.zip` Shapefile upload
-- [x] Feature ID/index
-- [x] Geometry type
-- [x] Geometry (GeoJSON)
-- [x] CRS
-- [x] Properties/attributes
-- [x] Graceful unsupported geometry handling
-- [x] Polygon area (m²)
-- [x] MultiPolygon area (extension)
-- [x] LineString length (m)
-- [x] MultiLineString length (extension)
-- [x] Point — no measurement required
-- [x] Geographic CRS reprojection before measurement (UTM + fallbacks)
-- [x] `POST /api/files/`
-- [x] `GET /api/files/` (listing — extension)
-- [x] `GET /api/files/{id}/`
-- [x] `DELETE /api/files/{id}/` (extension)
-- [x] `GET /api/files/{id}/measurements/`
-- [x] `GET /api/files/{id}/features/` (extension)
-- [x] `GET /api/files/{id}/features/{feature_id}/` (extension)
-- [x] README — setup instructions
-- [x] README — API documentation with example requests/responses
-- [x] README — application architecture
-- [x] README — file-processing flow
-- [x] README — measurement calculation flow
-- [x] README — CRS handling strategy
-- [x] README — design decisions
-- [x] README — learning
-- [x] README — future scope
-- [x] Pytest test suite
-- [x] Docker / Docker Compose
-- [x] GitHub Actions CI
-- [x] Swagger / OpenAPI auto-docs
-- [x] Health and readiness checks
-- [x] Postman collection
 - [x] Sample data files (KML + Shapefile ZIP)
